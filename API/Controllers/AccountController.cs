@@ -56,7 +56,7 @@ namespace API.Controllers
 
             if(user == null)
             {
-                return Unauthorized($"Username {loginDto.UserName} is invalid!");
+                return Unauthorized($"Username is invalid!");
             }
 
              using var hmac = new HMACSHA512(user.PasswordSalt);
