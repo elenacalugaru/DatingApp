@@ -7,5 +7,6 @@
             "database": "${workspaceFolder:DatingApp}/API/datingapp.db",
             "name": "datingapp"
         }
-    ]
+    ],
+    "editor.formatOnSave": true,
 }

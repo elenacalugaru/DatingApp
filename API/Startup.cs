@@ -1,5 +1,7 @@
+using API.Data;
 using API.Extensions;
 using API.Middleware;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
 namespace API
@@ -10,7 +12,7 @@ namespace API
         public Startup(IConfiguration config)
         {
             _config = config;
-          
+
         }
 
 
@@ -19,7 +21,7 @@ namespace API
         public void ConfigureServices(IServiceCollection services)
         {
 
-            
+
             services.AddApplicationServices(_config);
             services.AddControllers();
             services.AddCors();
@@ -28,20 +30,20 @@ namespace API
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAPIv5", Version = "v1" });
             });
             services.AddIdentityServices(_config);
-          
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public async void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-           
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPIv5 v1"));
             }
-            
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
@@ -59,6 +61,27 @@ namespace API
             {
                 endpoints.MapControllers();
             });
+
+            using var scope = app.ApplicationServices.CreateScope();
+
+            var services = scope.ServiceProvider;
+
+            try
+            {
+                var context = services.GetRequiredService<DataContext>();
+                await context.Database.MigrateAsync();
+                await Seed.SeedUsers(context);
+
+
+            }
+            catch (Exception ex)
+            {
+
+                var logger = services.GetRequiredService<ILogger<Startup>>();
+                logger.LogError(ex, "An error occured during migration");
+            }
+
+
         }
     }
 }
