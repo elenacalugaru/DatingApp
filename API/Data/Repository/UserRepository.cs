@@ -38,6 +38,22 @@ namespace API.Data.Repository
                 .SingleOrDefaultAsync();
         }
 
+
+        public async Task<AppUser> GetUserByUsernameAsync(string username)
+        {
+            return await _context.Users
+                .Include(u => u.Photos)
+                .SingleOrDefaultAsync(u => u.UserName == username);
+        }
+
+        public async Task<IEnumerable<AppUser>> GetUsersAsync()
+        {
+            return await _context.Users
+              .Include(u => u.Photos)
+              .ToListAsync();
+
+        }
+
         public async Task<IEnumerable<MemberDto>> GetMembersAsync()
         {
             return await _context.Users
