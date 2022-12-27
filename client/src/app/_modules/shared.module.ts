@@ -6,6 +6,7 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { NgxGalleryModule } from '@kolkov/ngx-gallery';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { FileUploadModule } from 'ng2-file-upload';
 
 
 
@@ -18,9 +19,8 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
     TabsModule.forRoot(),
     ToastrModule.forRoot({ positionClass: 'toast-bottom-right' }),
     NgxGalleryModule,
-    NgxSpinnerModule
-
-
+    NgxSpinnerModule,
+    FileUploadModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   exports: [
@@ -28,9 +28,8 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
     ToastrModule,
     TabsModule,
     NgxGalleryModule,
-    NgxSpinnerModule
-
-
+    NgxSpinnerModule,
+    FileUploadModule
   ]
 })
 export class SharedModule { }
