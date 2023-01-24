@@ -34,19 +34,15 @@ namespace API.Data
                 .HasForeignKey(s => s.TargetUserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.Entity<Message>()
-                            .HasKey(k => new { k.SenderId, k.RecipientId });
 
             builder.Entity<Message>()
                 .HasOne(m => m.Sender)
                 .WithMany(m => m.MessagesSent)
-                .HasForeignKey(m => m.SenderId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<Message>()
                 .HasOne(s => s.Recipient)
                 .WithMany(m => m.MessagesReceive)
-                .HasForeignKey(m => m.RecipientId)
                 .OnDelete(DeleteBehavior.Restrict);
 
         }
